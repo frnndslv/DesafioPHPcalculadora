@@ -99,6 +99,10 @@
                 if(array_key_exists('limpar',$_POST)){
                     clearMemory();
                 }
+            
+                if(array_key_exists('m',$_POST)){
+                    historico();
+                }
                  
                 
             }
@@ -107,7 +111,7 @@
             function historico() {
                 if($_SESSION['historico']){
                     forEach($_SESSION['historico'] as $key=>$value){
-                        echo ''.$value. "</br>";
+                        echo  "<div class='historico'> ''.$value.</div></br>";
                     }
                 }
             }
