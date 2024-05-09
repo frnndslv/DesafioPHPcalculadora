@@ -26,6 +26,7 @@
                 <input type="submit" id="calcular" name="calcular" value="Calcular">
                 <input type="submit" id="historico" name="historico" value="Histórico">
                 <input type="submit" id="m" name="m" value="M">
+                <input type="submit" id="salvar" name="salvar" value="Salvar">
                 <input type="submit" id="limpar" name="limpar" value="Limpar Histórico">
         </form>
         
@@ -101,7 +102,11 @@
                 }
             
                 if(array_key_exists('m',$_POST)){
-                    historico();
+                    salvandoDadoTela();
+        
+                }if(array_key_exists('salvar',$_POST)){
+                    save();
+    
                 }
                  
                 
@@ -116,6 +121,59 @@
                 }
             }
 
+            function salvandoDadoTela()
+        {
+
+
+            // Verifica se já existe um flag indicando que os dados foram salvos
+            if (isset($_SESSION['save_tela'])) {
+                // Se os dados já foram salvos, exibe-os
+                echo "<p>Dados Salvos: " . $_SESSION['save_tela']['num1'] . " " . $_SESSION['save_tela']['operation'] . " " . $_SESSION['save_tela']['num2'] . "</p>";
+                // Remove o flag para que os dados não sejam exibidos novamente no próximo clique
+                unset($_SESSION['save_tela']);
+            } else {
+                // Se os dados ainda não foram salvos, salva-os
+                $num1 = $_POST['num1'];
+                $num2 = $_POST['num2'];
+                $operation = $_POST['operation'];
+
+                if (!empty($num1) && !empty($num2) && !empty($operation)) {
+                    $_SESSION['save_tela'] = [
+                        'num1' => $num1,
+                        'operation' => $operation,
+                        'num2' => $num2
+                    ];
+                }
+            }
+        }
+        function save()
+        {
+
+
+            // Verifica se já existe um flag indicando que os dados foram salvos
+            if (isset($_SESSION['salvar'])) {
+                // Se os dados já foram salvos, exibe-os
+                echo "<p>Dados Salvos: " . $_SESSION['salvar']['num1'] . " " . $_SESSION['salvar']['operation'] . " " . $_SESSION['salvar']['num2'] . "</p>";
+                // Remove o flag para que os dados não sejam exibidos novamente no próximo clique
+                unset($_SESSION['salvar']);
+            } else {
+                // Se os dados ainda não foram salvos, salva-os
+                $num1 = $_POST['num1'];
+                $num2 = $_POST['num2'];
+                $operation = $_POST['operation'];
+
+                if (!empty($num1) && !empty($num2) && !empty($operation)) {
+                    $_SESSION['salvar'] = [
+                        'num1' => $num1,
+                        'operation' => $operation,
+                        'num2' => $num2
+                    ];
+                    echo "<p>Dados salvos.</p>";
+                } else {
+                    echo "<p>Não há dados para salvar.</p>";
+                }
+            }
+        }
         
 
         // Função para limpar a sessão de memória
